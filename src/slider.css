@@ -19,8 +19,9 @@
     padding: 10px;
     padding-top: 25px;
     opacity: 0.5;
-    transition: background-color .7s;
-    transition: opacity .7s;
+    transition: background-color .7s, opacity .7s;
+
+    text-transform: uppercase;
 }
 
 .swiper-slide-active {
@@ -41,3 +42,14 @@
 .swiper-button-next {
     right: calc(50% - 155px);
 }
+
+
+/* different slide types */
+.swiper-slide.on {
+    background: lightgreen;
+}
+
+.swiper-slide.off {
+    background: lightcoral;
+}
+

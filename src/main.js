@@ -6,11 +6,25 @@
 
 // create the dom for the sliders
 let description = {
-    "ISO": [100, 200, 800],
-    "SHUTTER": ["1/1000", "1/100", "1/50", "1/25", "1/10", "1/5", "1/2", "1'"],
-    "HDR": ["OFF", "ON"],
-    "FPS": ["23.976", "24", "25", "30", "60", "120"],
+    // base image sensor settings
+    "iso": [200, 400, 800],
+    "shutter": ["1/10", "1/13", "1/15", "1/20", "1/25", "1/30", "1/40", "1/50", "1/60", "1/80", "1/100", "1/125", "1/160", "1/200", "1/250", "1/320", "1/400"],
+    "fps": ["23.976", "24", "25", "30", "60", "120"],
+
+    // more advanced settings
+    "hdr": ["off", "on"],
+    "assist": ["off", "focus", "exposure", "focus + exposure"],
+    "wb": Array.apply(null, {length: 11}).map((_, i) => 3000 + i * 1000 / 5).map(k => `${k}K`),
+
 };
+
+let color_utils = require('./color_utils');
+console.log(color_utils);
+function k2rgb(k) {
+    let norm = (parseInt(k.replace(/[^0-9]/g, "")) - 3000) / 2000;
+    let rgb = color_utils.hslToRgb(1 - norm / 2.5 , .75, Math.sin(norm * 3.14) / 4 + .7);
+    return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+}
 
 function create_sliders(description) {
     return Object.keys(description).map(key => `
@@ -21,7 +35,10 @@ function create_sliders(description) {
                 <!-- Slides -->
                 ${
         description[key].map(val => `
-                        <div class="swiper-slide">${key}<br>${val}</div>
+                        <div class="swiper-slide ${(val + "").replace(/[^a-z]/gi, "")} ${(key + "").replace(/[^a-z]/gi, "")}" 
+                            ${(val + "").match(/[0-9]+K/) ? `style="background-color: ${k2rgb(val)}"` : `style="color: white"`}>
+                            ${key}<br>${val}
+                        </div>
                     `).reduce((a, b) => a+b)
         }
             </div>
@@ -41,6 +58,9 @@ let Swiper = require('../lib/swiper/dist/js/swiper');
 let test = new Swiper('.swiper-container', {
     slidesPerView: 'auto',
     centeredSlides: true,
+    longSwipes: true,
+    longSwipesRatio: 0,
+    longSwipesMs: 300,
     spaceBetween: 20,
     navigation: {
         nextEl: '.swiper-button-next',
