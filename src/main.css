@@ -2,3 +2,16 @@
 * @file the main css file for axiom-touch
  */
 
+@import "basic.css";
+@import "slider.css";
+
+
+h1 {
+    text-align: center;
+}
+
+@media(min-width: 700px) {
+    body {
+        padding: 20px;
+    }
+}

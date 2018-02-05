@@ -3,11 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Axiom-Touch</title>
+    <title>AXIOM_TOUCH</title>
 
-    
+    <!-- lib -->
+    <link rel="stylesheet" href="lib/swiper/dist/css/swiper.min.css">
+
+    <!-- actual logic -->
+    <link rel="stylesheet" href="src/main.css">
+
+    <script src="lib/tarp-require/require.js"></script>
+    <script>
+        window.addEventListener('load',() => {
+            Tarp.require("./src/main.js", true);
+        });
+    </script>
+
 </head>
 <body>
+    <header>
+        <h1>AXIOM_TOUCH</h1>
+    </header>
+    <main>
 
+    </main>
 </body>
 </html>

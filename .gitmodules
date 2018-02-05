@@ -1,0 +1,7 @@
+[submodule "lib/tarp-require"]
+	path = lib/tarp-require
+	url = https://github.com/letorbi/tarp.require.git
+	branch = tarp
+[submodule "lib/swiper"]
+	path = lib/swiper
+	url = https://github.com/nolimits4web/swiper
