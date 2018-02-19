@@ -13,17 +13,21 @@ let description = {
 
     // more advanced settings
     "hdr": ["off", "on"],
-    "assist": ["off", "focus", "exposure", "focus + exposure"],
-    "wb": Array.apply(null, {length: 11}).map((_, i) => 3000 + i * 1000 / 5).map(k => `${k}K`),
+    "assist": ["off", "focus", "exposure"],
+    "whitebalance": Array.apply(null, {length: 11}).map((_, i) => 3000 + i * 1000 / 5).map(k => `${k}K`),
 
 };
 
-let color_utils = require('./color_utils');
-console.log(color_utils);
 function k2rgb(k) {
-    let norm = (parseInt(k.replace(/[^0-9]/g, "")) - 3000) / 2000;
-    let rgb = color_utils.hslToRgb(1 - norm / 2.5 , .75, Math.sin(norm * 3.14) / 4 + .7);
-    return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+    let x = (parseInt(k.replace(/[^0-9]/g, "")) - 3000) / 2000;
+    let color = {
+        r: x < .5 ? 1 : 1 - x * 2 + 1,
+        g: -Math.abs(x -.5) * 2 + 1,
+        b: x > .5 ? 1 : x * 2
+    };
+
+
+    return `rgb(${~~(color.r * 90) + 150}, ${~~(color.g * 90) + 150}, ${~~(color.b * 90) + 150})`;
 }
 
 function create_sliders(description) {
@@ -31,13 +35,14 @@ function create_sliders(description) {
         <!-- Slider main container -->
         <div class="swiper-container">
             <!-- Additional required wrapper -->
+            <div class="scale-name">${key}</div>
             <div class="swiper-wrapper">
                 <!-- Slides -->
                 ${
         description[key].map(val => `
                         <div class="swiper-slide ${(val + "").replace(/[^a-z]/gi, "")} ${(key + "").replace(/[^a-z]/gi, "")}" 
-                            ${(val + "").match(/[0-9]+K/) ? `style="background-color: ${k2rgb(val)}"` : `style="color: white"`}>
-                            ${key}<br>${val}
+                            ${(val + "").match(/[0-9]+K/) ? `style="background-color: ${k2rgb(val)}"` : ``}>
+                            ${val}
                         </div>
                     `).reduce((a, b) => a+b)
         }
@@ -58,9 +63,12 @@ let Swiper = require('../lib/swiper/dist/js/swiper');
 let test = new Swiper('.swiper-container', {
     slidesPerView: 'auto',
     centeredSlides: true,
-    longSwipes: true,
-    longSwipesRatio: 0,
-    longSwipesMs: 300,
+    freeMode: true,
+    freeModeSticky: true,
+    freeModeMomentumBounceRatio: 3,
+    freeModeMinimumVelocity: 0.3,
+    freeModeMomentumVelocityRatio: 1,
+    freeModeMomentumRatio: .5,
     spaceBetween: 20,
     navigation: {
         nextEl: '.swiper-button-next',

@@ -8,6 +8,17 @@
     margin-bottom: 40px;
 }
 
+.scale-name {
+    position: absolute;
+    left: 50%;
+    top: 25px;
+    z-index: 11;
+    transform: translateX(-50%);
+
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
 .swiper-slide {
     background-color: #B1ADA6;
     width: 50%;
@@ -17,7 +28,7 @@
     border-radius: 10px;
     font-size: 20px;
     padding: 10px;
-    padding-top: 25px;
+    padding-top: 55px;
     opacity: 0.5;
     transition: background-color .7s, opacity .7s;
 
@@ -45,7 +56,7 @@
 
 
 /* different slide types */
-.swiper-slide.on {
+.swiper-slide.off ~ .swiper-slide {
     background: lightgreen;
 }
 
